@@ -93,7 +93,7 @@
         <component name="Microsoft-Windows-DNS-Client" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <Interfaces>
                 <Interface wcm:action="add">
-                    <Identifier>SlotID 2 Port 1</Identifier>
+                    <Identifier>{{ .MacAddressNic1 }}</Identifier>
                     <DNSServerSearchOrder>
                     <IpAddress wcm:action="add" wcm:keyValue="1">{{ .NameServer }}</IpAddress>
                     </DNSServerSearchOrder>
@@ -105,11 +105,11 @@
         <component name="Microsoft-Windows-UnattendedJoin" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <Identification>
                 <Credentials>
-                    <Domain>$ActiveDirectoryDomain</Domain>
-                    <Password>$DomainAdminPassword</Password>
-                    <Username>$DomainAdminUser</Username>
+                    <Domain>{{ .Domain }}</Domain>
+                    <Password>{{ .secure.DomainAdminPassword }}</Password>
+                    <Username>{{ .DomainAdminUser }}</Username>
                 </Credentials>
-                <JoinDomain>$ActiveDirectoryDomain</JoinDomain>
+                <JoinDomain>{{ .Domain }}</JoinDomain>
             </Identification>
         </component>
     </settings>
@@ -117,7 +117,7 @@
         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <AutoLogon>
                 <Password>
-                    <Value>{{ .secure.Password }}</Value>
+                    <Value>{{ .secure.AdministratorPassword }}</Value>
                     <PlainText>true</PlainText>
                 </Password>
                 <Enabled>true</Enabled>
@@ -135,7 +135,7 @@
                 <SkipMachineOOBE>true</SkipMachineOOBE>
                 <SkipUserOOBE>true</SkipUserOOBE>
             </OOBE>
-            <TimeZone>$TimeZone</TimeZone>
+            <TimeZone>{{ .TimeZone }}</TimeZone>
             <UserAccounts>
                 <AdministratorPassword>
                     <Value>{{ .secure.AdministratorPassword }}</Value>
