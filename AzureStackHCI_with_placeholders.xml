@@ -13,12 +13,6 @@
         <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <ImageInstall>
                 <OSImage>
-                    <InstallFrom>
-                        <MetaData wcm:action="add">
-                        <Key>/IMAGE/NAME</Key>
-                        <Value>Azure Stack HCI SERVERAZURESTACKHCICORE</Value>
-                        </MetaData>
-                    </InstallFrom>
                     <InstallTo>
                         <DiskID>DISKIDPLACEHOLDER</DiskID>
                         <PartitionID>PARTITIONPLACEHOLDER</PartitionID>
@@ -63,7 +57,7 @@
         <component name="Microsoft-Windows-TCPIP" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <Interfaces>
                 <Interface wcm:action="add">
-                    <Identifier>SlotID 2 Port 1</Identifier>
+                    <Identifier>{{ .MacAddressNic1 }}</Identifier>
                     <Ipv4Settings>
                         <DhcpEnabled>false</DhcpEnabled>
                         <Metric>10</Metric>
@@ -75,11 +69,19 @@
                     <Routes>
                         <Route wcm:action="add">
                             <Identifier>0</Identifier>
-                            <Metric>20</Metric>
+                            <Metric>10</Metric>
                             <NextHopAddress>{{ .Gateway }}</NextHopAddress>
                             <Prefix>0.0.0.0/0</Prefix>
                         </Route>
                     </Routes>
+                </Interface>
+                <Interface wcm:action="add">
+                    <Identifier>{{ .MacAddressNic2 }}</Identifier>
+                    <Ipv4Settings>
+                        <DhcpEnabled>false</DhcpEnabled>
+                        <Metric>10</Metric>
+                        <RouterDiscoveryEnabled>false</RouterDiscoveryEnabled>
+                    </Ipv4Settings>
                 </Interface>
             </Interfaces>
         </component>
@@ -99,6 +101,16 @@
                     <DisableDynamicUpdate>false</DisableDynamicUpdate>
                 </Interface>
             </Interfaces>
+        </component>
+        <component name="Microsoft-Windows-UnattendedJoin" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <Identification>
+                <Credentials>
+                    <Domain>$ActiveDirectoryDomain</Domain>
+                    <Password>$DomainAdminPassword</Password>
+                    <Username>$DomainAdminUser</Username>
+                </Credentials>
+                <JoinDomain>$ActiveDirectoryDomain</JoinDomain>
+            </Identification>
         </component>
     </settings>
     <settings pass="oobeSystem">
@@ -123,9 +135,10 @@
                 <SkipMachineOOBE>true</SkipMachineOOBE>
                 <SkipUserOOBE>true</SkipUserOOBE>
             </OOBE>
+            <TimeZone>$TimeZone</TimeZone>
             <UserAccounts>
                 <AdministratorPassword>
-                    <Value>{{ .secure.Password }}</Value>
+                    <Value>{{ .secure.AdministratorPassword }}</Value>
                     <PlainText>true</PlainText>
                 </AdministratorPassword>
             </UserAccounts>
