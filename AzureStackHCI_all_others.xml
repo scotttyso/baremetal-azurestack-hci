@@ -4,15 +4,13 @@
         <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS"
             xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <InputLocale>{{ .InputLocale}}</InputLocale>
-            <LayeredDriver>{{ .LayeredDriver}}</LayeredDriver>
+            <InputLocale>{{ .InputLocale }}</InputLocale>
             <SetupUILanguage>
-                <UILanguage>{{ .UILanguage}}</UILanguage>
+                <UILanguage>{{ .UILanguage }}</UILanguage>
             </SetupUILanguage>
-            <SystemLocale>{{ .SystemLocale}}</SystemLocale>
-            <UILanguage>{{ .UILanguage}}</UILanguage>
-            <UILanguageFallback>{{ .UILanguageFallback}}</UILanguageFallback>
-            <UserLocale>{{ .UserLocale}}</UserLocale>
+            <SystemLocale>{{ .UILanguage }}</SystemLocale>
+            <UILanguage>{{ .UILanguage }}</UILanguage>
+            <UserLocale>{{ .UILanguage }}</UserLocale>
         </component>
         <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS"
             xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
@@ -52,10 +50,12 @@
             xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <InputLocale>{{ .InputLocale }}</InputLocale>
-            <SystemLocale>{{ .SystemLocale }}</SystemLocale>
+            <SetupUILanguage>
+                <UILanguage>{{ .UILanguage }}</UILanguage>
+            </SetupUILanguage>
+            <SystemLocale>{{ .UILanguage }}</SystemLocale>
             <UILanguage>{{ .UILanguage }}</UILanguage>
-            <UILanguageFallback>{{ .UILanguageFallback }}</UILanguageFallback>
-            <UserLocale>{{ .UserLocale }}</UserLocale>
+            <UserLocale>{{ .UILanguage }}</UserLocale>
         </component>
         <component name="Microsoft-Windows-Security-SPP-UX" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS"
             xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
