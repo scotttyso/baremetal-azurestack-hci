@@ -50,9 +50,6 @@
             xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <InputLocale>{{ .InputLocale }}</InputLocale>
-            <SetupUILanguage>
-                <UILanguage>{{ .UILanguage }}</UILanguage>
-            </SetupUILanguage>
             <SystemLocale>{{ .UILanguage }}</SystemLocale>
             <UILanguage>{{ .UILanguage }}</UILanguage>
             <UserLocale>{{ .UILanguage }}</UserLocale>
