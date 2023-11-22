@@ -2,14 +2,12 @@
 <unattend xmlns="urn:schemas-microsoft-com:unattend">
     <settings pass="windowsPE">
         <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <InputLocale>en-US</InputLocale>
-            <LayeredDriver>en-US</LayeredDriver>
+            <InputLocale>0409:00000409</InputLocale>
             <SetupUILanguage>
                 <UILanguage>en-US</UILanguage>
             </SetupUILanguage>
             <SystemLocale>en-US</SystemLocale>
             <UILanguage>en-US</UILanguage>
-            <UILanguageFallback>en-US</UILanguageFallback>
             <UserLocale>en-US</UserLocale>
         </component>
         <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -41,7 +39,7 @@
     </settings>
     <settings pass="specialize">
         <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <InputLocale>en-US</InputLocale>
+            <InputLocale>0409:00000409</InputLocale>
             <SystemLocale>en-US</SystemLocale>
             <UILanguage>en-US</UILanguage>
             <UILanguageFallback>en-US</UILanguageFallback>
@@ -104,29 +102,31 @@
                 </Interface>
             </Interfaces>
         </component>
-        <component name="Microsoft-Windows-UnattendedJoin" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <Identification>
-                <Credentials>
-                    <Domain>{{ .Domain }}</Domain>
-                    <Password>{{ .secure.DomainAdminPassword }}</Password>
-                    <Username>{{ .DomainAdminUser }}</Username>
-                </Credentials>
-                <JoinDomain>{{ .Domain }}</JoinDomain>
-            </Identification>
-        </component>
         <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <FirstLogonCommands>
+            <RunSynchronous>
                 <RunSynchronousCommand wcm:action="add">
-                    <Description>Create Virtual Account to Run Windows Update</Description>
-                    <Order>3</Order>
-                    <Path>New-PSSessionConfigurationFile -RunAsVirtualAccount -Path .\VirtualAccount.pssc</Path>
+                    <Credentials>
+                        <Domain>{{ .Domain }}</Domain>
+                        <Password>{{ .secure.DomainPassword }}</Password>
+                        <Username>{{ .DomainUsername }}</Username>
+                    </Credentials>
+                    <Description>Set Environment Var</Description>
+                    <Order>1</Order>
+                    <Path>$env:password="{{ .secure.DomainPassword }}"</Path>
+                    <WillReboot>OnRequest</WillReboot>
                 </RunSynchronousCommand>
-                <SynchronousCommand wcm:action="add">
-                    <Description>Register Virtual Account</Description>
-                    <Order>4</Order>
-                    <Path>Register-PSSessionConfiguration -Name 'VirtualAccount' -Path .\VirtualAccount.pssc -Force</Path>
-                </SynchronousCommand>
-            </FirstLogonCommands>
+                <RunSynchronousCommand wcm:action="add">
+                    <Credentials>
+                        <Domain>MyDomain</Domain>
+                        <Password>MyPassword</Password>
+                        <Username>MyUsername</Username>
+                    </Credentials>
+                    <Description>Copy PowerShell Script</Description>
+                    <Order>2</Order>
+                    <Path>Powershell -executionpolicy ByPass -File "{{ .NetworkShare }}\ezdriver_install.ps1" -model {{ .model }} -os_version {{ .os_version }} -share {{ .NetworkShare }} -share_user {{ .DomainUser }}</Path>
+                    <WillReboot>OnRequest</WillReboot>
+                </RunSynchronousCommand>
+            </RunSynchronous>
         </component>
     </settings>
     <settings pass="oobeSystem">
