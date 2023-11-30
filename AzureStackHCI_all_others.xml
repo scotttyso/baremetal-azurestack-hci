@@ -58,26 +58,15 @@
                 <Interface wcm:action="add">
                     <Identifier>{{ .MacAddressNic1_dash_format }}</Identifier>
                     <Ipv4Settings>
-                        <DhcpEnabled>false</DhcpEnabled>
+                        <DhcpEnabled>true</DhcpEnabled>
                         <Metric>10</Metric>
                         <RouterDiscoveryEnabled>false</RouterDiscoveryEnabled>
                     </Ipv4Settings>
-                    <UnicastIpAddresses>
-                        <IpAddress wcm:action="add" wcm:keyValue="1">{{ .IpAddress }}/{{ .IpPrefix }}</IpAddress>
-                    </UnicastIpAddresses>
-                    <Routes>
-                        <Route wcm:action="add">
-                            <Identifier>0</Identifier>
-                            <Metric>10</Metric>
-                            <NextHopAddress>{{ .Gateway }}</NextHopAddress>
-                            <Prefix>0.0.0.0/0</Prefix>
-                        </Route>
-                    </Routes>
                 </Interface>
                 <Interface wcm:action="add">
                     <Identifier>{{ .MacAddressNic2_dash_format }}</Identifier>
                     <Ipv4Settings>
-                        <DhcpEnabled>false</DhcpEnabled>
+                        <DhcpEnabled>true</DhcpEnabled>
                         <Metric>10</Metric>
                         <RouterDiscoveryEnabled>false</RouterDiscoveryEnabled>
                     </Ipv4Settings>
@@ -88,18 +77,6 @@
             <DomainProfile_EnableFirewall>false</DomainProfile_EnableFirewall>
             <PrivateProfile_EnableFirewall>false</PrivateProfile_EnableFirewall>
             <PublicProfile_EnableFirewall>false</PublicProfile_EnableFirewall>
-        </component>
-        <component name="Microsoft-Windows-DNS-Client" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <Interfaces>
-                <Interface wcm:action="add">
-                    <Identifier>{{ .MacAddressNic1_dash_format }}</Identifier>
-                    <DNSServerSearchOrder>
-                    <IpAddress wcm:action="add" wcm:keyValue="1">{{ .NameServer }}</IpAddress>
-                    </DNSServerSearchOrder>
-                    <EnableAdapterDomainNameRegistration>true</EnableAdapterDomainNameRegistration>
-                    <DisableDynamicUpdate>false</DisableDynamicUpdate>
-                </Interface>
-            </Interfaces>
         </component>
         <component name="Microsoft-Windows-UnattendedJoin" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <Identification>
