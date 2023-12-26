@@ -5,7 +5,7 @@
         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <AutoLogon>
                 <Password>
-                    <Value>{{ administratorPassword }}</Value>
+                    <Value>{{ kwargs.administratorPassword }}</Value>
                     <PlainText>true</PlainText>
                 </Password>
                 <LogonCount>3</LogonCount>
@@ -26,7 +26,7 @@
             </OOBE>
             <UserAccounts>
                 <AdministratorPassword>
-                    <Value>{{ administratorPassword }}</Value>
+                    <Value>{{ kwargs.administratorPassword }}</Value>
                     <PlainText>true</PlainText>
                 </AdministratorPassword>
             </UserAccounts>
@@ -44,13 +44,13 @@
                     <RequiresUserInput>false</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>CMD /c &quot;echo $Cred = $(New-Object -Type &apos;PSCredential&apos; -Arg &apos;{{ domainAdministrator }}&apos;,$(ConvertTo-SecureString &apos;{{ domainPassword }}&apos; -AsPlain -Force)) &gt;&gt; C:\n.ps1&quot;</CommandLine>
+                    <CommandLine>CMD /c &quot;echo $Cred = $(New-Object -Type &apos;PSCredential&apos; -Arg &apos;{{ kwargs.domainAdministrator }}&apos;,$(ConvertTo-SecureString &apos;{{ kwargs.domainPassword }}&apos; -AsPlain -Force)) &gt;&gt; C:\n.ps1&quot;</CommandLine>
                     <Description>Add Remote Repository Credentials</Description>
                     <Order>12</Order>
                     <RequiresUserInput>false</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>CMD /c &quot;echo $fshare = New-PSDrive -Name &apos;ShareNAME&apos; -PSProvider &apos;FileSystem&apos; -Root &apos;{{ sharePath }}&apos; -Credential $Cred &gt;&gt; C:\n.ps1&quot;</CommandLine>
+                    <CommandLine>CMD /c &quot;echo $fshare = New-PSDrive -Name &apos;ShareNAME&apos; -PSProvider &apos;FileSystem&apos; -Root &apos;{{ kwargs.sharePath }}&apos; -Credential $Cred &gt;&gt; C:\n.ps1&quot;</CommandLine>
                     <Description>Setup FileShare</Description>
                     <Order>13</Order>
                     <RequiresUserInput>false</RequiresUserInput>
@@ -104,19 +104,19 @@
                     <RequiresUserInput>false</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>CMD /c &quot;echo $Cred = $(New-Object -Type &apos;PSCredential&apos; -Arg &apos;{{ domainAdministrator }}&apos;,$(ConvertTo-SecureString &apos;{{ domainPassword }}&apos; -AsPlain -Force)) &gt;&gt; C:\j.ps1&quot;</CommandLine>
+                    <CommandLine>CMD /c &quot;echo $Cred = $(New-Object -Type &apos;PSCredential&apos; -Arg &apos;{{ kwargs.domainAdministrator }}&apos;,$(ConvertTo-SecureString &apos;{{ kwargs.domainPassword }}&apos; -AsPlain -Force)) &gt;&gt; C:\j.ps1&quot;</CommandLine>
                     <Description>Set Credentials</Description>
                     <Order>32</Order>
                     <RequiresUserInput>false</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>CMD /c &quot;echo $OU = &apos;{{ organizationalUnit }}&apos; &gt;&gt; C:\j.ps1&quot;</CommandLine>
+                    <CommandLine>CMD /c &quot;echo $OU = &apos;{{ kwargs.organizationalUnit }}&apos; &gt;&gt; C:\j.ps1&quot;</CommandLine>
                     <Description>Set Organizational Unit</Description>
                     <Order>33</Order>
                     <RequiresUserInput>false</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>CMD /c &quot;echo Add-Computer -Domain &apos;{{ domain }}&apos; -Cred $Cred {{ organizationalUnit }} -Force -Verbose;Stop-Transcript &gt;&gt; C:\j.ps1&quot;</CommandLine>
+                    <CommandLine>CMD /c &quot;echo Add-Computer -Domain &apos;{{ kwargs.domain }}&apos; -Cred $Cred {{ kwargs.ouArgument }} -Force -Verbose;Stop-Transcript &gt;&gt; C:\j.ps1&quot;</CommandLine>
                     <Order>34</Order>
                     <RequiresUserInput>false</RequiresUserInput>
                 </SynchronousCommand>
@@ -145,12 +145,12 @@
             <SkipAutoActivation>true</SkipAutoActivation>
         </component>
         <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <InputLocale>{{ inputLocale }}</InputLocale>
-            <LayeredDriver>{{ layeredDriver }}</LayeredDriver>
-            <SystemLocale>{{ languagePack }}</SystemLocale>
-            <UILanguage>{{ languagePack }}</UILanguage>
-            <UILanguageFallback>{{ secondaryLanguage }}</UILanguageFallback>
-            <UserLocale>{{ languagePack }}</UserLocale>
+            <InputLocale>{{ kwargs.inputLocale }}</InputLocale>
+            <SystemLocale>{{ kwargs.languagePack }}</SystemLocale>
+            <UILanguage>{{ kwargs.languagePack }}</UILanguage>
+            <UserLocale>{{ kwargs.languagePack }}</UserLocale>
+            <UILanguageFallback>{{ kwargs.secondaryLanguage }}</UILanguageFallback>
+            <LayeredDriver>{{ kwargs.layeredDriver }}</LayeredDriver>
         </component>
         <component name="Microsoft-Windows-SQMApi" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <CEIPEnabled>0</CEIPEnabled>
@@ -226,7 +226,7 @@
             </DiskConfiguration>
             <UserData>
                 <AcceptEula>true</AcceptEula>
-                <Organization>{{ organization }}</Organization>
+                <Organization>{{ kwargs.organization }}</Organization>
                 <FullName>Administrator</FullName>
             </UserData>
             <WindowsDeploymentServices>
@@ -243,9 +243,9 @@
                 </ImageSelection>
                 <Login>
                     <Credentials>
-                        <Domain>{{ domain }}</Domain>
-                        <Password>{{ domainPassword }}</Password>
-                        <Username>{{ domainAdministrator }}</Username>
+                        <Domain>{{ kwargs.domain }}</Domain>
+                        <Password>{{ kwargs.domainPassword }}</Password>
+                        <Username>{{ kwargs.domainAdministrator }}</Username>
                     </Credentials>
                 </Login>
             </WindowsDeploymentServices>
